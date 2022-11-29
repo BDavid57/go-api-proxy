@@ -7,6 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
+
+	"github.com/BDavid57/go-api-proxy/proxySend"
 )
 
 func main() {
@@ -14,7 +16,8 @@ func main() {
 
 	app.Use(logger.New())
 
-	app.Get("/tweets/all", proxy.Forward("http://localhost/api/tweets"))
+	app.Get("/tweets/get_all", proxy.Forward(proxySend.GetAllTweetsPath()))
+	app.Get("/tweets/get_one/:id", proxySend.GetOneTweetPath)
 
 	port := 3001
 	log.Fatal(app.Listen(fmt.Sprintf(":%d", port)))
